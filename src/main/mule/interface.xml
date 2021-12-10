@@ -26,43 +26,27 @@
         <apikit:console config-ref="bookmyshow-config" />
     </flow>
     <flow name="delete:\order:bookmyshow-config">
-		<flow-ref doc:name="Flow Reference" doc:id="339f7bbb-6d13-4a9f-ae35-3f9ed53b514f" name="cancelTicketFlow"/>
+		<flow-ref doc:name="Cancel Order" doc:id="339f7bbb-6d13-4a9f-ae35-3f9ed53b514f" name="cancelTicketFlow"/>
     </flow>
     <flow name="get:\movies:bookmyshow-config">
-		<flow-ref doc:name="Flow Reference - get /movies" doc:id="54983769-c679-421a-903b-ca7b5429eca4" name="getmovies"/>
+		<flow-ref doc:name="Get all Movies" doc:id="54983769-c679-421a-903b-ca7b5429eca4" name="getmovies"/>
     </flow>
     <flow name="get:\offers:bookmyshow-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-[
-  {
-    Offer_Id: 1,
-    Offer: "Get 200 OFF on bookings above 1000 INR"
-  }, 
-  {
-    Offer_Id: 2,
-    Offer: "Use Code MOVIE50 to get 50 INR discount"
-  }
-]]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="Get offers" doc:id="c51c4782-66fd-4b37-86ea-3c028c89f3fe" name="offersFlow"/>
     </flow>
     <flow name="get:\order:bookmyshow-config">
-		<flow-ref doc:name="Flow Reference" doc:id="41e710b7-9af5-45cd-b297-e57eca69261b" name="getOrderDetails"/>
+		<flow-ref doc:name="Get Orders" doc:id="41e710b7-9af5-45cd-b297-e57eca69261b" name="getOrderDetails"/>
     </flow>
     <flow name="get:\theater:bookmyshow-config">
-		<flow-ref doc:name="Flow Reference" doc:id="3c4561c8-878b-42da-981e-5acfb2a10ccd" name="getTheater"/>
+		<flow-ref doc:name="Get all theaters" doc:id="3c4561c8-878b-42da-981e-5acfb2a10ccd" name="getTheater"/>
     </flow>
     <flow name="get:\movies\(movie_id):bookmyshow-config">
-		<flow-ref doc:name="Flow Reference" doc:id="162f9a6c-336e-46ab-88b8-b0aed10e4094" name="getSpecificMovie"/>
+		<flow-ref doc:name="Get Movies by ID" doc:id="162f9a6c-336e-46ab-88b8-b0aed10e4094" name="getSpecificMovie"/>
     </flow>
     <flow name="get:\theater\(theater_id):bookmyshow-config">
-		<flow-ref doc:name="Flow Reference" doc:id="9cc510eb-7537-4e43-b496-23a3d1edea73" name="getSpecificTheater"/>
+		<flow-ref doc:name="Get Theater by ID" doc:id="9cc510eb-7537-4e43-b496-23a3d1edea73" name="getSpecificTheater"/>
     </flow>
     <flow name="post:\order:application\json:bookmyshow-config">
-		<flow-ref doc:name="Flow Reference" doc:id="72d6abef-7bfd-476d-ab10-78d4da0c7d35" name="addOrderFlow"/>
+		<flow-ref doc:name="Add Order Flow" doc:id="72d6abef-7bfd-476d-ab10-78d4da0c7d35" name="addOrderFlow"/>
     </flow>
 </mule>
