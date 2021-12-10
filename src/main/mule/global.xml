@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+	<configuration-properties doc:name="Configuration properties" doc:id="711d93d7-869f-41e8-9ffd-9f2c043be2a1" file="config.yaml" />
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="776f954c-4e0f-4491-be69-d857ef47bcba" >
+		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}" />
+	</db:config>
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="d05f2e9a-8c08-40b2-8d4b-954933744281" >
+		<http:listener-connection host="${http.host}" port="${http.port}" />
+	</http:listener-config>
+	<configuration doc:name="Configuration" doc:id="1ddb8b57-ef6f-496b-90ea-d2ecc958c15c" defaultErrorHandler-ref="globalError_Handler" />
+	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="1b073185-2782-4268-a7d4-434eb1bc505d" >
+		<wsc:connection wsdlLocation="http://order-management-ws-soap.us-e2.cloudhub.io/order/orderSOAP?wsdl" service="order" port="orderSOAP" address="http://order-management-ws-soap.us-e2.cloudhub.io/order/orderSOAP" >
+			<wsc:custom-transport-configuration >
+				<wsc:default-http-transport-configuration timeout="500000" />
+			</wsc:custom-transport-configuration>
+			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
+		</wsc:connection>
+	</wsc:config>
+	<api-gateway:autodiscovery apiId="17493465" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="ac8b93ca-9f47-40fd-9203-b1e64afb6a73" flowRef="bookmyshow-main" />
+	<error-handler name="globalError_Handler" doc:id="5ca9f699-f569-443c-94aa-719a7cf6ccb3" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="92607f5f-a427-4f1d-b8d0-c0b5a2d4f443" type="ANY">
+			<ee:transform doc:name="Transform Message" doc:id="1f6cf8e5-c2e7-4a4a-a33e-a45d0f423a7b" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	error: error.description
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-propagate>
+	</error-handler>
+</mule>

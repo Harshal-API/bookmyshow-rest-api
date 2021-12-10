@@ -1,0 +1,23 @@
+%dw 2.0
+
+type auto_7c137e32_a127_4185_874e_bf2625d5238c_Output_Attributes = {|
+  clientCertificate?: {|
+    publicKey?: {|  |}, 
+    "type"?: String, 
+    encoded?: Binary
+  |}, 
+  headers: {|  |}, 
+  listenerPath: String, 
+  method: String, 
+  queryParams: {|  |}, 
+  queryString: String, 
+  relativePath: String, 
+  remoteAddress: String, 
+  requestPath: String, 
+  requestUri: String, 
+  scheme: String, 
+  uriParams: {| theater_id: String |}, 
+  version: String, 
+  localAddress: String
+|}
+

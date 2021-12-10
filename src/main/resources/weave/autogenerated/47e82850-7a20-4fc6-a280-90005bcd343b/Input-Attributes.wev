@@ -1,0 +1,23 @@
+%dw 2.0
+
+type auto_47e82850_7a20_4fc6_a280_90005bcd343b_Input_Attributes = {|
+  clientCertificate?: {|
+    publicKey?: {|  |}, 
+    "type"?: String, 
+    encoded?: Binary
+  |}, 
+  headers: {|  |}, 
+  listenerPath: String, 
+  method: String, 
+  queryParams: {|  |}, 
+  queryString: String, 
+  relativePath: String, 
+  remoteAddress: String, 
+  requestPath: String, 
+  requestUri: String, 
+  scheme: String, 
+  uriParams: {| movie_id: String |}, 
+  version: String, 
+  localAddress: String
+|}
+

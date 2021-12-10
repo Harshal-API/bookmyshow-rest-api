@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd">
+	<flow name="getmovies" doc:id="d8e32dcc-66b3-4442-9786-8cfde1b57b26" >
+		<logger level="INFO" doc:name="Start - Logger" doc:id="d63f3e63-e323-471a-ad55-a9b017766f72" message="Get the all movie list"/>
+		<choice doc:name="get/movies" doc:id="c80563ec-74e1-406d-88aa-c8121bf0e031" >
+			<when expression="#[!isEmpty(attributes.queryParams)]">
+				<db:select doc:name="get/movies by City" doc:id="2475f715-b211-4283-82e7-c5b7a9813869" config-ref="Database_Config">
+			<db:sql><![CDATA[select * from list_movies where City = :City ]]></db:sql>
+			<db:input-parameters><![CDATA[#[{
+	City : attributes.queryParams.city
+}]]]></db:input-parameters>
+		</db:select>
+			</when>
+			<otherwise >
+				<db:select doc:name="get/movies all" doc:id="b61e67b1-ed96-4e1b-843d-4a682704f63f" config-ref="Database_Config">
+					<db:sql ><![CDATA[select * from list_movies]]></db:sql>
+				</db:select>
+			</otherwise>
+		</choice>
+		<ee:transform doc:name="Response/movies" doc:id="59e3c76b-d199-4ef5-82cd-52e285a93216" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End - Logger" doc:id="40cf29bf-be72-4036-b7c3-1ae5acf7494c" message="Movies return"/>
+	</flow>
+	<flow name="getSpecificMovie" doc:id="47e82850-7a20-4fc6-a280-90005bcd343b" >
+		<logger level="INFO" doc:name="Start- Logger" doc:id="334567ec-7657-4378-ae10-a5b2e8bcf811" message="Get specific movie"/>
+		<db:select doc:name="get/movie by Movie_Id" doc:id="f8f609f8-7d86-4b8d-bd45-3be5de43d426" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from list_movies where Movie_ID = :Movie_Id]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	"Movie_Id" : attributes.uriParams.movie_id as Number
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Response /movie" doc:id="63a80686-47eb-4681-8a4c-ea507b347d36" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End- Logger" doc:id="d947e634-86fa-4e49-91af-4ec8a9cacb2e" message="Selected movie details returned"/>
+	</flow>
+	<flow name="getTheater" doc:id="8151575a-396c-413f-99bc-e385c3b6a660" >
+		<logger level="INFO" doc:name="Start-Logger" doc:id="ba25ea61-ab8e-400f-8ec6-3b337f9eb84b" message="Get all theater list"/>
+		<db:select doc:name="get/theater" doc:id="6f56a8d8-0261-4911-a397-402b76beb6f5" config-ref="Database_Config">
+			<db:sql ><![CDATA[select theater_id,theater_name,location,area from theater]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="response/theaters all" doc:id="1c7499d2-3da0-4fc2-b7c3-f1b72dd55085" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End-Logger" doc:id="cc2394ed-747c-4330-a767-43a82c6162ca" message="All theater list returned"/>
+	</flow>
+	<flow name="getSpecificTheater" doc:id="7c137e32-a127-4185-874e-bf2625d5238c" >
+		<logger level="INFO" doc:name="Start-Logger" doc:id="7f03becd-3e2c-41ce-b93f-a78dd2a89000" message="Get Specific theater"/>
+		<db:select doc:name="get/theater by theater_id" doc:id="13023afd-c05c-439d-8d0c-bd4215eb4edd" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from theater where theater_id = :theater_id]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	theater_id: attributes.uriParams.theater_id
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="response /theater" doc:id="be092c98-f08a-4023-9230-545834612d1e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End- Logger" doc:id="25b0f60a-2f13-4f35-9a63-fba1cf0762ed" message="Theater details returned"/>
+	</flow>
+	<flow name="getOrderDetails" doc:id="1ea3c46a-5b48-4280-b390-f3a9c954acaa" >
+		<logger level="INFO" doc:name="Start- Logger" doc:id="48b6ce33-4c33-4e4a-b7e8-f5a3ae724e51" message="This is start of getOrderDetails flow"/>
+		<choice doc:name="Choice" doc:id="c173dfc1-46ae-42a5-a568-dc9a9053ce38" >
+			<when expression="#[!isEmpty(attributes.queryParams.order_id)]">
+				<set-variable value="#[attributes.queryParams.order_id]" doc:name="Set Variable - orderID" doc:id="b2c090a7-59cd-47ae-9a2a-c8ccf5304dd7" variableName="order_id" />
+				<ee:transform doc:name="JSON to XML" doc:id="7637c8d1-75fc-4cee-9c64-bf21ab81baf9">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://www.bookmyshow.org/order/
+---
+{
+	ns0#getOrdersById: {
+		orderId: vars.order_id as Number
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+				<wsc:consume doc:name="Consume SOAP" doc:id="07d944d3-ad80-4bde-9639-588bea671531" operation="getOrdersById" config-ref="Web_Service_Consumer_Config"/>
+			</when>
+			<when expression="#[!isEmpty(attributes.queryParams.mobile_No)]">
+				<set-variable value="#[attributes.queryParams.mobile_No]" doc:name="Set Variable- mobileNo" doc:id="81150c0d-4adb-4d01-8e03-19cc1b2b812b" variableName="mobile_no" />
+				<ee:transform doc:name="JSON to XML" doc:id="700b38e2-f0dd-4723-886f-34909679b53d" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://www.bookmyshow.org/order/
+---
+{
+	ns0#getOrdersByMobileNo: {
+		mobileNo: vars.mobile_no as Number
+	}
+	}
+	]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<wsc:consume operation="getOrdersByMobileNo" doc:name="Consume SOAP" doc:id="c7df29b0-d4ed-4370-a280-1d2cafa28e18" config-ref="Web_Service_Consumer_Config"/>
+			</when>
+			<when expression="#[!isEmpty(attributes.queryParams.email_id)]">
+				<set-variable value="#[attributes.queryParams.email_id]" doc:name="Set Variable - emailId" doc:id="7d1135da-0fe5-423e-9c8f-10d6f51a2d1d" variableName="email_id" />
+				<ee:transform doc:name="JSON to XML" doc:id="44b29436-bddb-4f04-851d-3bd50e601257" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://www.bookmyshow.org/order/
+---
+{
+	ns0#getOrdersByEmail: {
+		email: vars.email_id as String
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<wsc:consume operation="getOrdersByEmail" doc:name="Consume SOAP" doc:id="f660bbbc-b476-44c8-b62f-35047a1fb714" config-ref="Web_Service_Consumer_Config"/>
+			</when>
+			<otherwise >
+				<wsc:consume operation="getAllOrders" doc:name="Consume SOAP - All orders" doc:id="f9fb7f9a-33b0-41f8-9a4f-3ce4d98c3a7b" config-ref="Web_Service_Consumer_Config"/>
+			</otherwise>
+		</choice>
+		<ee:transform doc:name="Response SOAP WS" doc:id="67459922-82b5-4229-b31d-b30b2cce3625" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<set-variable value="#[payload.body[0]]" doc:name="Set Variable" doc:id="a7a2be2f-7089-4bcc-ab42-7353ff895604" variableName="response"/>
+		<choice doc:name="Choice" doc:id="3bca9a1f-c53d-4c14-8188-49fdb7ea0f39" >
+			<when expression='#[vars.response == {&#10;  "Order": null&#10;}]'>
+				<set-payload value='#["No record found"]' doc:name="Set Payload" doc:id="515c58fa-cad5-466f-974a-b57613183457" />
+			</when>
+			<otherwise>
+				<set-payload value="#[payload]" doc:name="Set Payload" doc:id="d67b2931-c45f-4790-bf38-a1c2a318e777" />
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="End - Logger" doc:id="01b56be2-de48-4c93-b1b2-338cd219ed45" message="End of getOrderDetails flow"/>
+	</flow>
+	<flow name="cancelTicketFlow" doc:id="788f5736-c808-4b7d-b051-7683ab400458" >
+		<set-variable value="#[message.attributes.queryParams.order_id]" doc:name="Set Variable - order_id" doc:id="3355104c-11ec-4407-9415-af8145f6e029" variableName="order_id"/>
+		<ee:transform doc:name="JSON to XML" doc:id="04ff0655-200c-477c-89b1-5af0a201ef24" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://www.bookmyshow.org/order/
+---
+{
+	ns0#deleteOrder: {
+		orderId: vars.order_id as Number
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<wsc:consume operation="deleteOrder" doc:name="Consume SOAP" doc:id="ceb58dc0-0a52-496d-8195-8c10c0c491ca" config-ref="Web_Service_Consumer_Config"/>
+		<ee:transform doc:name="Response SOAP" doc:id="f98698a9-2c9b-4ced-8f4d-dcf81efb0d3d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+ns ns0 http://www.bookmyshow.org/order/
+---
+{
+	Message: payload.body.ns0#deleteOrderResponse.status as String,
+	Order_ID: payload.body.ns0#deleteOrderResponse.orderId
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End - Logger" doc:id="653995d3-4d24-481a-b439-006a1aac3d69" message="This is end of cancel ticket flow"/>
+	</flow>
+	<flow name="addOrderFlow" doc:id="d77a8be4-7274-4ffa-949a-63a11f767654" >
+		<logger level="INFO" doc:name="Start- Logger" doc:id="0c981460-d974-477b-9521-8825be2a232e" message="This is start of add order"/>
+		<ee:transform doc:name="JSON to XML" doc:id="bf3c39da-8244-4975-b6ee-ef79e10e3ce6" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://www.bookmyshow.org/order/
+---
+{
+	ns0#addOrder: {
+		customerName: payload.Customer_Name,
+		mobileNo: payload.Mobile_No as String,
+		email: payload.Email_Id,
+		movieName: payload.Movie_Name,
+		theatreName: payload.Theater_Name,
+		location: payload.Location,
+		area: payload.Area,
+		totalSeats: payload.Seats_Req,
+		bookedSeats: payload.Seat_No[0],
+		totalAmount: payload.Ammount
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<wsc:consume operation="addOrder" doc:name="Consume SOAP" doc:id="7c4e80a8-4c0c-49ef-8f43-71058d071ec1" config-ref="Web_Service_Consumer_Config"/>
+		<ee:transform doc:name="Response SOAP" doc:id="f0f88233-7f71-491d-ab9f-0a5902530c68" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End-Logger" doc:id="b2a26fc3-77be-4ee0-86e7-4df3bce98e67" message="This is end of add order flow"/>
+	</flow>
+	<flow name="offersFlow" doc:id="d1d37475-3f2e-4ae2-8806-fccdbf6ca109" >
+		<logger level="INFO" doc:name="Start- Logger" doc:id="069e10d1-3f89-4cab-971a-1e3f1cc4c9e3" message="This is start of offer flow"/>
+		<db:select doc:name="Select offers" doc:id="9c453291-1f99-4fa2-a3cc-7b47d6184ce2" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from offers]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Response offers" doc:id="ce27e63d-9ad8-431d-aae5-3f7220bcc117" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End- Logger" doc:id="c6f7e5ec-9d1a-468a-a818-965c7524d19f" message="This is end of offers flow"/>
+	</flow>
+</mule>
