@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="interface-suite.xml" />
+	<munit:test name="delete:\order:bookmyshow-config-test" doc:id="3f02d788-2413-4eed-b732-5f48d979a294" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="faa90161-2611-4dd2-a9ed-4e952e36fb30" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://deleteorderbookmyshowconfigtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://deleteorderbookmyshowconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://deleteorderbookmyshowconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to delete:\order:bookmyshow-config" doc:id="5dd99229-d61c-4661-96b6-089395230f4f" name="delete:\order:bookmyshow-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="c45a1bd9-fe19-49c7-a81d-ae0d80d9ac83" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import deleteorderbookmyshowconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Cancel Order" doc:id="cc147481-19fb-4064-936d-9a71dbc849bb" processor="flow-ref" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="339f7bbb-6d13-4a9f-ae35-3f9ed53b514f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get:\movies:bookmyshow-config-test" doc:id="7aa1a58d-0a97-402d-8475-bbdc239b4fb9" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="abf47ef5-3bde-4f85-8d7d-b2e6372e7093" >
+				<munit:payload value="#[readUrl('classpath://getmoviesbookmyshowconfigtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getmoviesbookmyshowconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getmoviesbookmyshowconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\movies:bookmyshow-config" doc:id="8aad9ecc-0bd9-4415-ac8d-7747f6aa6ab9" name="get:\movies:bookmyshow-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="1f215624-8155-4c64-8840-0661b012706e" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getmoviesbookmyshowconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Get all Movies" doc:id="0f0d6a4d-6ce9-453f-a8e0-4846b48a2a12" processor="flow-ref" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="54983769-c679-421a-903b-ca7b5429eca4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get:\offers:bookmyshow-config-test" doc:id="70cf6534-0e0a-4de6-a79b-e371dcb45bdd" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="64ff48a0-9dd9-4b69-8075-911586b0f43c" >
+				<munit:payload value="#[readUrl('classpath://getoffersbookmyshowconfigtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getoffersbookmyshowconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getoffersbookmyshowconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\offers:bookmyshow-config" doc:id="122d4d19-1976-437d-94de-212360a3ad90" name="get:\offers:bookmyshow-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="2813fecd-958f-4d54-bcf9-1a4be7666b47" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getoffersbookmyshowconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Get offers" doc:id="4dcdaa91-e6ce-4c43-a76e-eba5fc1a2200" processor="flow-ref" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c51c4782-66fd-4b37-86ea-3c028c89f3fe" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get:\order:bookmyshow-config-test" doc:id="f021b5c0-a38d-4440-9d79-7602364ba703" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="a2e80b16-f549-4a0b-a641-5f5baffabf0e" >
+				<munit:payload value="#[readUrl('classpath://getorderbookmyshowconfigtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getorderbookmyshowconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getorderbookmyshowconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\order:bookmyshow-config" doc:id="6395ef51-f291-48de-9765-5c488295d986" name="get:\order:bookmyshow-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="e98a4446-1056-489b-8e9c-bbf6519b1c6d" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getorderbookmyshowconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Get Orders" doc:id="56065599-d1a0-4889-9f67-411d611662ea" processor="flow-ref" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="41e710b7-9af5-45cd-b297-e57eca69261b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get:\theater:bookmyshow-config-test" doc:id="de48b389-fde1-4b58-aafe-06da055944c2" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="c5e2d4f1-a53f-4816-a345-8b0c651e7c7b" >
+				<munit:payload value="#[readUrl('classpath://gettheaterbookmyshowconfigtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://gettheaterbookmyshowconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://gettheaterbookmyshowconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\theater:bookmyshow-config" doc:id="1e3642fb-f25f-4587-bd37-245048a766d5" name="get:\theater:bookmyshow-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="6e61e86c-8612-478b-94f1-db0a662091d4" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import gettheaterbookmyshowconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Get all theaters" doc:id="33cab7e5-0bf0-43dc-8284-dc6f56b171ca" processor="flow-ref" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="3c4561c8-878b-42da-981e-5acfb2a10ccd" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get:\movies\(movie_id):bookmyshow-config-test" doc:id="87cdf178-dd1d-4cd2-8f7e-d94455b69389" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="ba442e4f-fa0b-4c93-88bd-bbad262dd2d5" >
+				<munit:payload value="#[readUrl('classpath://getmoviesmovieidbookmyshowconfigtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getmoviesmovieidbookmyshowconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getmoviesmovieidbookmyshowconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\movies\(movie_id):bookmyshow-config" doc:id="fedfd7ec-7e3f-4d66-ac79-22078987228a" name="get:\movies\(movie_id):bookmyshow-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="b82089f4-3776-41cb-aee7-73b31a64c9bd" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getmoviesmovieidbookmyshowconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Get Movies by ID" doc:id="ae8dac5e-6fb6-436a-8d6d-cef0839793ed" processor="flow-ref" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="162f9a6c-336e-46ab-88b8-b0aed10e4094" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get:\theater\(theater_id):bookmyshow-config-test" doc:id="4d0b6d8d-9e8b-4070-a844-65aa5bd6fae2" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="1e1c75aa-c0fe-450a-a25a-a77c907655d8" >
+				<munit:payload value="#[readUrl('classpath://gettheatertheateridbookmyshowconfigtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://gettheatertheateridbookmyshowconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://gettheatertheateridbookmyshowconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\theater\(theater_id):bookmyshow-config" doc:id="ee5e7448-106e-40cc-9158-6fbfb9de5054" name="get:\theater\(theater_id):bookmyshow-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="7064efe1-30b8-4829-b283-46ba837b6e1d" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import gettheatertheateridbookmyshowconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Get Theater by ID" doc:id="5efe2af5-b4f5-4fbe-85a1-ff11934f466d" processor="flow-ref" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="9cc510eb-7537-4e43-b496-23a3d1edea73" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

@@ -16,15 +16,13 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 		<http:listener-connection host="${http.host}" port="${http.port}" />
 	</http:listener-config>
 	<configuration doc:name="Configuration" doc:id="1ddb8b57-ef6f-496b-90ea-d2ecc958c15c" defaultErrorHandler-ref="globalError_Handler" />
-	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="1b073185-2782-4268-a7d4-434eb1bc505d" >
+	
+	<api-gateway:autodiscovery apiId="17493465" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="ac8b93ca-9f47-40fd-9203-b1e64afb6a73" flowRef="bookmyshow-main" />
+	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="91136e7a-7539-4cfe-8cbe-8e7c527d9fcc" >
 		<wsc:connection wsdlLocation="http://order-management-ws-soap.us-e2.cloudhub.io/order/orderSOAP?wsdl" service="order" port="orderSOAP" address="http://order-management-ws-soap.us-e2.cloudhub.io/order/orderSOAP" >
-			<wsc:custom-transport-configuration >
-				<wsc:default-http-transport-configuration timeout="500000" />
-			</wsc:custom-transport-configuration>
 			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
 		</wsc:connection>
 	</wsc:config>
-	<api-gateway:autodiscovery apiId="17493465" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="ac8b93ca-9f47-40fd-9203-b1e64afb6a73" flowRef="bookmyshow-main" />
 	<error-handler name="globalError_Handler" doc:id="5ca9f699-f569-443c-94aa-719a7cf6ccb3" >
             <on-error-propagate type="APIKIT:BAD_REQUEST">
                 <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">

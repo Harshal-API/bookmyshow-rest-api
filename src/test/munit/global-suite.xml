@@ -7,12 +7,6 @@
 		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
 		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
-	<munit:config name="implementation-test-suite.xml" />
-	<munit:test name="implementation-test-suite-getmoviesTest" doc:id="c9279eda-b3a3-4686-aec1-d3ecd48d72ae" description="Test">
-		<munit:execution >
-			<flow-ref doc:name="Flow-ref to getmovies" doc:id="573af079-d2b2-489a-a592-9f6e4a6675b8" name="getmovies"/>
-		</munit:execution>
-	</munit:test>
-
+	<munit:config name="global-suite.xml" />
 
 </mule>

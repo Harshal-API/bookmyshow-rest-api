@@ -194,9 +194,24 @@ ns ns0 http://www.bookmyshow.org/order/
 		</ee:transform>
 		<logger level="INFO" doc:name="End - Logger" doc:id="653995d3-4d24-481a-b439-006a1aac3d69" message="This is end of cancel ticket flow"/>
 	</flow>
-	<flow name="addOrderFlow" doc:id="d77a8be4-7274-4ffa-949a-63a11f767654" >
-		<logger level="INFO" doc:name="Start- Logger" doc:id="0c981460-d974-477b-9521-8825be2a232e" message="This is start of add order"/>
-		<ee:transform doc:name="JSON to XML" doc:id="bf3c39da-8244-4975-b6ee-ef79e10e3ce6" >
+	<flow name="offersFlow" doc:id="d1d37475-3f2e-4ae2-8806-fccdbf6ca109" >
+		<logger level="INFO" doc:name="Start- Logger" doc:id="069e10d1-3f89-4cab-971a-1e3f1cc4c9e3" message="This is start of offer flow"/>
+		<db:select doc:name="Select" doc:id="7866e382-7f51-46bc-ba9d-55dbf547aaf3" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT * FROM offers]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Response offers" doc:id="ce27e63d-9ad8-431d-aae5-3f7220bcc117" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End- Logger" doc:id="c6f7e5ec-9d1a-468a-a818-965c7524d19f" message="This is end of offers flow"/>
+	</flow>
+	<flow name="addOrderFlow" doc:id="2f5f1456-33a9-4871-b2b5-96864e31bdfd" >
+		<logger level="INFO" doc:name="Logger" doc:id="a2428e85-8b6e-4691-8439-14d59d87ee96" message="This is a Start of Add order flow"/>
+		<ee:transform doc:name="Transform Message" doc:id="859cec26-b021-465c-a97a-63ce0e67ea03" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/xml
@@ -209,17 +224,18 @@ ns ns0 http://www.bookmyshow.org/order/
 		email: payload.Email_Id,
 		movieName: payload.Movie_Name,
 		theatreName: payload.Theater_Name,
+		showTime: payload.Show_Time as DateTime,
 		location: payload.Location,
 		area: payload.Area,
 		totalSeats: payload.Seats_Req,
-		bookedSeats: payload.Seat_No[0],
+		bookedSeats: payload.Seat_No joinBy ",",
 		totalAmount: payload.Ammount
 	}
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<wsc:consume operation="addOrder" doc:name="Consume SOAP" doc:id="7c4e80a8-4c0c-49ef-8f43-71058d071ec1" config-ref="Web_Service_Consumer_Config"/>
-		<ee:transform doc:name="Response SOAP" doc:id="f0f88233-7f71-491d-ab9f-0a5902530c68" >
+		<wsc:consume operation="addOrder" doc:name="Consume" doc:id="eff35ba9-0445-4fe8-a784-38c852512fa8" config-ref="Web_Service_Consumer_Config"/>
+		<ee:transform doc:name="Transform Message" doc:id="9eb8ad78-a30f-486d-a478-1256bf439835" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -227,21 +243,6 @@ output application/json
 payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="End-Logger" doc:id="b2a26fc3-77be-4ee0-86e7-4df3bce98e67" message="This is end of add order flow"/>
-	</flow>
-	<flow name="offersFlow" doc:id="d1d37475-3f2e-4ae2-8806-fccdbf6ca109" >
-		<logger level="INFO" doc:name="Start- Logger" doc:id="069e10d1-3f89-4cab-971a-1e3f1cc4c9e3" message="This is start of offer flow"/>
-		<db:select doc:name="Select offers" doc:id="9c453291-1f99-4fa2-a3cc-7b47d6184ce2" config-ref="Database_Config">
-			<db:sql ><![CDATA[select * from offers]]></db:sql>
-		</db:select>
-		<ee:transform doc:name="Response offers" doc:id="ce27e63d-9ad8-431d-aae5-3f7220bcc117" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-payload]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<logger level="INFO" doc:name="End- Logger" doc:id="c6f7e5ec-9d1a-468a-a818-965c7524d19f" message="This is end of offers flow"/>
+		<logger level="INFO" doc:name="Logger" doc:id="161b1fd1-3430-4086-80a3-f73c295db0e9" message="End of add order flow"/>
 	</flow>
 </mule>

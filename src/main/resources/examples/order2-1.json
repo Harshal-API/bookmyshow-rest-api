@@ -1,0 +1,13 @@
+{
+  "Movie_Name" : "Dhoom2",
+  "Theater_Name": "Inox",
+  "Location" : "Mumbai",
+  "Area": "Kurla",
+  "Customer_Name": "Harshal",
+  "Mobile_No": "9653335102",
+  "Email_Id": "test@abc.com",
+  "Show_Time" : "2021-12-27T14:15:00",
+  "Seats_Req": 2,
+  "Seat_No": "5,6",
+  "Ammount" : 400
+}

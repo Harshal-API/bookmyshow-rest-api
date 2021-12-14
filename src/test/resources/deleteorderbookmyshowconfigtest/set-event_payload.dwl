@@ -1,0 +1,16 @@
+{
+  "Movie_Name": "Shershah-soap",
+  "Theater_Name": "Inox",
+  "Location": "Mumbai",
+  "Area": "Kurla",
+  "Customer_Name": "Harshal",
+  "Mobile_No": 965444,
+  "Email_Id": "test@abc.com",
+  "Show_Time": "2021-12-03T14:15:00",
+  "Seats_Req": 2,
+  "Seat_No": [
+    5,
+    6
+  ],
+  "Ammount": 400
+}
