@@ -19,7 +19,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	
 	<api-gateway:autodiscovery apiId="17493465" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="ac8b93ca-9f47-40fd-9203-b1e64afb6a73" flowRef="bookmyshow-main" />
 	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="91136e7a-7539-4cfe-8cbe-8e7c527d9fcc" >
-		<wsc:connection wsdlLocation="http://order-management-ws-soap.us-e2.cloudhub.io/order/orderSOAP?wsdl" service="order" port="orderSOAP" address="http://order-management-ws-soap.us-e2.cloudhub.io/order/orderSOAP" >
+		<wsc:connection wsdlLocation="http://bookmyshow-soap-api.us-e2.cloudhub.io/order/orderSOAP?wsdl" service="order" port="orderSOAP" address="http://order-management-ws-soap.us-e2.cloudhub.io/order/orderSOAP" >
 			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
 		</wsc:connection>
 	</wsc:config>
