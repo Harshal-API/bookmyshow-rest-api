@@ -48,5 +48,6 @@
     </flow>
     <flow name="post:\order:application\json:bookmyshow-config">
 		<flow-ref doc:name="Add Order Flow" doc:id="72d6abef-7bfd-476d-ab10-78d4da0c7d35" name="addOrderFlow"/>
+	    //flow-end
     </flow>
 </mule>
